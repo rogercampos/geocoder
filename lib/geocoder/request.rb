@@ -6,9 +6,9 @@ module Geocoder
     def location
       @location ||= begin
         detected_ip = env['HTTP_X_REAL_IP'] ||
-          env['HTTP_X_FORWARDED_FOR'] && env['HTTP_X_FORWARDED_FOR'].split(",").first.strip
+          env['HTTP_X_FORWARDED_FOR'] && env['HTTP_X_FORWARDED_FOR'].split(",").first
 
-        real_ip = detected_ip && (detected_ip = IpAddress.new(detected_ip)) && detected_ip.valid? && !detected_ip.loopback? && detected_ip.to_s || self.ip
+        real_ip = detected_ip && (detected_ip = IpAddress.new(detected_ip.strip)) && detected_ip.valid? && !detected_ip.loopback? && detected_ip.to_s || self.ip
         Geocoder.search(real_ip).first
       end
     end

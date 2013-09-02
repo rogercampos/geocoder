@@ -31,4 +31,14 @@ class RequestTest < Test::Unit::TestCase
     req = MockRequest.new({"HTTP_X_FORWARDED_FOR" => "127.0.0.1"}, "74.200.247.59")
     assert_equal "US", req.location.country_code
   end
+
+  def test_with_null_forwarded_headers
+    req = MockRequest.new({"HTTP_X_FORWARDED_FOR" => ""}, "74.200.247.59")
+    assert_equal "US", req.location.country_code
+  end
+
+  def test_with_null_real_ip_header
+    req = MockRequest.new({"HTTP_X_REAL_IP" => ""}, "74.200.247.59")
+    assert_equal "US", req.location.country_code
+  end
 end
